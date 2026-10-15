@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>연구잇다</title>
+<meta name="description" content="대학원생 연구자와 연구 참여자를 이어주는 모집·매칭 플랫폼">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="#find" aria-label="연구잇다 처음으로">
+      <span class="brand-mark" aria-hidden="true">잇</span>
+      <span class="brand-name">연구잇다</span>
+    </a>
+    <nav class="tabs" aria-label="주요 메뉴">
+      <a href="#find" data-tab="find">연구 찾기</a>
+      <a href="#post" data-tab="post">연구 등록</a>
+      <a href="#mine" data-tab="mine">내 활동</a>
+    </nav>
+  </div>
+</header>
+
+<div class="demo-note">
+  <div class="wrap">체험판이에요. 등록한 연구와 신청 내용은 이 브라우저에만 저장되고, 연구자에게 실제로 전달되지는 않아요.</div>
+</div>
+
+<main>
+  <!-- 연구 찾기 -->
+  <section id="view-find" class="view" data-view="find">
+    <div class="hero">
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">대학원 연구 참여자 모집</p>
+          <h1>게시판에 붙은 모집 전단,<br>이제 조건에 맞는 것만 골라 보세요.</h1>
+          <p class="lede">설문·인터뷰·실험 연구를 한곳에 모았어요. 내 나이와 지역, 참여 방식을 입력하면 참여할 수 있는 연구만 보여드려요. 모든 연구는 IRB 승인번호를 함께 공개해요.</p>
+        </div>
+        <dl class="hero-stats" id="hero-stats"></dl>
+      </div>
+    </div>
+
+    <div class="wrap find-grid">
+      <aside class="profile-card" aria-labelledby="profile-title">
+        <h2 id="profile-title">내 조건</h2>
+        <p class="hint">입력하면 참여할 수 있는 연구에 <span class="chip ok">조건 맞음</span>이 붙어요.</p>
+        <form id="profile-form" class="stack">
+          <label class="field">
+            <span>나이</span>
+            <input id="p-age" name="age" type="number" min="14" max="99" inputmode="numeric" placeholder="예: 27">
+          </label>
+          <label class="field">
+            <span>성별</span>
+            <select id="p-gender" name="gender">
+              <option value="">선택 안 함</option>
+              <option>여성</option>
+              <option>남성</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>사는 지역</span>
+            <select id="p-region" name="region"></select>
+          </label>
+          <label class="check">
+            <input id="p-online" name="onlineOnly" type="checkbox">
+            <span>온라인 연구만 볼래요</span>
+          </label>
+          <label class="check">
+            <input id="p-match" name="matchOnly" type="checkbox">
+            <span>조건 맞는 연구만 보기</span>
+          </label>
+        </form>
+      </aside>
+
+      <div class="results">
+        <div class="filters">
+          <label class="search">
+            <span class="sr">검색</span>
+            <input id="q" type="search" placeholder="연구 주제, 학교, 학과로 검색">
+          </label>
+          <div class="seg" role="group" aria-label="연구 유형" id="type-filter"></div>
+          <label class="sort">
+            <span class="sr">정렬</span>
+            <select id="sort">
+              <option value="deadline">마감 임박순</option>
+              <option value="pay">시간당 사례비 높은순</option>
+              <option value="short">짧은 연구순</option>
+              <option value="new">최신 등록순</option>
+            </select>
+          </label>
+        </div>
+        <p class="count" id="count" aria-live="polite"></p>
+        <div class="board" id="board"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 연구 등록 -->
+  <section id="view-post" class="view" data-view="post" hidden>
+    <div class="wrap narrow">
+      <p class="eyebrow">연구자용</p>
+      <h1 class="page-title">참여자 모집 공고 올리기</h1>
+      <p class="lede">IRB 승인을 받은 연구만 올릴 수 있어요. 참여 조건을 구체적으로 적을수록 맞는 참여자에게 잘 보여요.</p>
+
+      <form id="post-form" class="post-form" novalidate>
+        <fieldset>
+          <legend>기본 정보</legend>
+          <label class="field full"><span>연구 제목</span>
+            <input id="f-title" name="title" required maxlength="60" placeholder="예: 수면 습관과 작업기억에 관한 실험 연구"></label>
+          <label class="field"><span>학교</span>
+            <input id="f-school" name="school" required placeholder="예: 연세대학교"></label>
+          <label class="field"><span>학과·연구실</span>
+            <input id="f-lab" name="lab" required placeholder="예: 심리학과 인지신경과학 연구실"></label>
+          <label class="field full"><span>연구 소개</span>
+            <textarea id="f-summary" name="summary" rows="3" required maxlength="300" placeholder="참여자가 무엇을 하게 되는지 쉽게 적어 주세요."></textarea></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>참여 방식</legend>
+          <label class="field"><span>연구 유형</span>
+            <select id="f-type" name="type" required></select></label>
+          <label class="field"><span>방식</span>
+            <select id="f-mode" name="mode" required>
+              <option>온라인</option><option>대면</option>
+            </select></label>
+          <label class="field"><span>지역 (대면일 때)</span>
+            <select id="f-region" name="region"></select></label>
+          <label class="field"><span>장소 (대면일 때)</span>
+            <input id="f-location" name="location" placeholder="예: 위당관 312호"></label>
+          <label class="field"><span>소요 시간 (분)</span>
+            <input id="f-minutes" name="minutes" type="number" min="5" max="600" required inputmode="numeric" placeholder="60"></label>
+          <label class="field"><span>사례비 (원)</span>
+            <input id="f-pay" name="pay" type="number" min="0" step="1000" required inputmode="numeric" placeholder="15000"></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>모집 조건</legend>
+          <label class="field"><span>최소 나이</span>
+            <input id="f-agemin" name="ageMin" type="number" min="14" max="99" required value="19"></label>
+          <label class="field"><span>최대 나이</span>
+            <input id="f-agemax" name="ageMax" type="number" min="14" max="99" required value="39"></label>
+          <label class="field"><span>성별</span>
+            <select id="f-gender" name="gender"><option>무관</option><option>여성</option><option>남성</option></select></label>
+          <label class="field"><span>모집 인원</span>
+            <input id="f-capacity" name="capacity" type="number" min="1" max="2000" required value="30"></label>
+          <label class="field full"><span>추가 조건 (한 줄에 하나씩)</span>
+            <textarea id="f-conditions" name="conditions" rows="3" placeholder="예: 오른손잡이&#10;교정시력 0.8 이상"></textarea></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>승인·연락</legend>
+          <label class="field"><span>IRB 승인번호</span>
+            <input id="f-irb" name="irb" required placeholder="예: 7001988-202610-HR-123-01"></label>
+          <label class="field"><span>모집 마감일</span>
+            <input id="f-deadline" name="deadline" type="date" required></label>
+          <label class="field full"><span>연구자 연락처 (이메일)</span>
+            <input id="f-contact" name="contact" type="email" required placeholder="lab@university.ac.kr"></label>
+        </fieldset>
+
+        <p class="form-error" id="post-error" role="alert" hidden></p>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">공고 올리기</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- 내 활동 -->
+  <section id="view-mine" class="view" data-view="mine" hidden>
+    <div class="wrap narrow">
+      <p class="eyebrow">내 활동</p>
+      <h1 class="page-title">신청한 연구와 올린 공고</h1>
+
+      <h2 class="sub">내가 신청한 연구</h2>
+      <div id="my-apps" class="list"></div>
+
+      <h2 class="sub">내가 올린 공고</h2>
+      <div id="my-posts" class="list"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">연구잇다 · 대학원생 연구자와 참여자를 잇는 모집 게시판</div>
+</footer>
+
+<!-- 연구 상세 / 신청 -->
+<dialog id="detail" class="sheet" aria-labelledby="d-title">
+  <div class="sheet-body" id="detail-body"></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
