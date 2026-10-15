@@ -30,3 +30,7 @@ python3 -m http.server 8000
 | `css/style.css` | 디자인 |
 | `js/data.js` | 예시 연구 공고 9건, 지역·유형 목록 |
 | `js/app.js` | 매칭, 필터, 신청, 등록 동작 |
+
+## 수정할 때 주의
+
+`css/style.css`나 `js/*.js`를 바꾸면 `index.html`에서 그 파일 주소 끝의 `?v=숫자`를 하나 올려 주세요. 그래야 휴대폰 브라우저가 예전 파일을 쓰지 않고 새 파일을 받아요.
