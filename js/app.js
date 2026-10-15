@@ -55,16 +55,28 @@
   function initPickers() {
     $('#type-filter').innerHTML = '<option value="">유형 전체</option>' + window.TYPES.map(t => `<option>${t}</option>`).join('');
     $('#type-filter').addEventListener('change', e => { state.type = e.target.value; renderBoard(); });
-    $('#region-filter').innerHTML = '<option value="">지역 전체</option><option value="온라인">온라인</option>' +
-      SIDO.map(r => `<option value="${r}">${r}</option>`).join('');
-    $('#region-filter').addEventListener('change', e => {
-      state.region = e.target.value; state.district = '';
-      const has = !!window.REGIONS[state.region];
-      $('#district-wrap').hidden = !has;
-      if (has) $('#district-filter').innerHTML = districtOpts(state.region, `${state.region} 전체`);
-      renderBoard();
+    // 지역: 버튼을 누르면 시도 → 시군구 선택 칸이 열려요
+    const opt = (val, label, on, attr) => `<button type="button" class="opt" ${attr}="${val}" aria-pressed="${on}">${label}</button>`;
+    const renderRegion = () => {
+      $('#sido-opts').innerHTML = [['', '전체'], ['온라인', '온라인'], ...SIDO.map(r => [r, r])]
+        .map(([v, l]) => opt(v, l, state.region === v, 'data-sido')).join('');
+      const list = window.REGIONS[state.region];
+      $('#district-opts').hidden = !list;
+      if (list) $('#district-opts').innerHTML = [['', `${state.region} 전체`], ...list.map(d => [d, d])]
+        .map(([v, l]) => opt(v, l, state.district === v, 'data-district')).join('');
+      const tb = $('#region-toggle');
+      tb.textContent = state.region ? [state.region, state.district].filter(Boolean).join(' ') : '지역';
+      tb.classList.toggle('on', !!state.region);
+    };
+    $('#region-panel').addEventListener('click', e => {
+      const sido = e.target.closest('[data-sido]'), dist = e.target.closest('[data-district]');
+      if (sido) { state.region = sido.dataset.sido; state.district = ''; }
+      else if (dist) state.district = dist.dataset.district;
+      else return;
+      renderRegion(); renderBoard();
     });
-    $('#district-filter').addEventListener('change', e => { state.district = e.target.value; renderBoard(); });
+    $('#region-toggle').addEventListener('click', () => togglePanel('region'));
+    renderRegion();
     const onDate = () => {
       state.from = $('#date-from').value; state.to = $('#date-to').value;
       $('#date-to').min = state.from || addDays(0);
@@ -301,7 +313,7 @@
   }
 
   // ---- 필터 패널: 한 번에 하나만 열려요 ----
-  const PANELS = { date: ['#date-toggle', '#date-panel', '#date-from'], profile: ['#profile-toggle', '#profile-form', '#p-age'] };
+  const PANELS = { region: ['#region-toggle', '#region-panel', '#sido-opts .opt'], date: ['#date-toggle', '#date-panel', '#date-from'], profile: ['#profile-toggle', '#profile-form', '#p-age'] };
   function togglePanel(name) {
     Object.entries(PANELS).forEach(([key, [btnSel, panelSel, focusSel]]) => {
       const open = key === name && $(panelSel).hidden;

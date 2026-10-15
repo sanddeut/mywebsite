@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=25">
+<link rel="stylesheet" href="css/style.css?v=27">
 </head>
 <body>
 <header class="top">
@@ -30,7 +30,6 @@
   <!-- 연구 찾기 -->
   <section id="view-find" class="view" data-view="find">
     <div class="wrap hero">
-      <p class="eyebrow">대학원 연구에 참여해 보세요</p>
       <h1>내 의견이<br>가치가 되는 곳</h1>
       <p class="hero-stats" id="hero-stats"></p>
     </div>
@@ -49,16 +48,13 @@
             <span class="sr">유형</span>
             <select id="type-filter"></select>
           </label>
-          <label class="picker">
-            <span class="sr">지역</span>
-            <select id="region-filter"></select>
-          </label>
-          <label class="picker" id="district-wrap" hidden>
-            <span class="sr">시군구</span>
-            <select id="district-filter"></select>
-          </label>
+          <button type="button" class="picker picker-btn" id="region-toggle" aria-expanded="false" aria-controls="region-panel">지역</button>
           <button type="button" class="picker picker-btn" id="date-toggle" aria-expanded="false" aria-controls="date-panel">모집기간</button>
           <button type="button" class="picker picker-btn" id="profile-toggle" aria-expanded="false" aria-controls="profile-form">내 조건</button>
+        </div>
+        <div id="region-panel" class="profile-panel region-panel" hidden>
+          <div class="opt-group" id="sido-opts" role="group" aria-label="시도"></div>
+          <div class="opt-group districts" id="district-opts" role="group" aria-label="시군구" hidden></div>
         </div>
         <div id="date-panel" class="profile-panel date-panel" hidden>
           <label class="field">
@@ -207,7 +203,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=25"></script>
-<script src="js/app.js?v=25"></script>
+<script src="js/data.js?v=27"></script>
+<script src="js/app.js?v=27"></script>
 </body>
 </html>
