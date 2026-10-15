@@ -306,6 +306,7 @@
     if (remove) { myPosts = myPosts.filter(p => p.id !== remove.dataset.remove); store.set('posts', myPosts); toast('공고를 내렸어요.'); return refresh(); }
   });
   $('#q').addEventListener('input', e => { state.q = e.target.value; renderBoard(); });
+  $('#search-form').addEventListener('submit', e => { e.preventDefault(); state.q = $('#q').value; renderBoard(); $('#q').blur(); });
   $('#sort').addEventListener('change', e => { state.sort = e.target.value; renderBoard(); });
   window.addEventListener('hashchange', route);
 

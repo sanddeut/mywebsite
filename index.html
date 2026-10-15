@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=10">
+<link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 <header class="top">
@@ -72,20 +72,25 @@
 
       <div class="results">
         <div class="filters">
-          <label class="search">
-            <span class="sr">검색</span>
-            <input id="q" type="search" placeholder="연구 주제, 학교, 학과로 검색">
-          </label>
-          <div class="seg" role="group" aria-label="연구 유형" id="type-filter"></div>
-          <label class="sort">
-            <span class="sr">정렬</span>
-            <select id="sort">
-              <option value="deadline">마감 임박순</option>
-              <option value="pay">사례비 높은순</option>
-              <option value="short">짧은 연구순</option>
-              <option value="new">최신 등록순</option>
-            </select>
-          </label>
+          <form class="search-row" id="search-form" role="search">
+            <label class="search">
+              <span class="sr">검색</span>
+              <input id="q" type="search" placeholder="연구 주제, 학교, 학과로 검색">
+            </label>
+            <button type="submit" class="btn primary search-btn">검색</button>
+          </form>
+          <div class="chip-row">
+            <div class="seg" role="group" aria-label="연구 유형" id="type-filter"></div>
+            <label class="sort">
+              <span class="sr">정렬</span>
+              <select id="sort">
+                <option value="deadline">마감 임박순</option>
+                <option value="pay">사례비 높은순</option>
+                <option value="short">짧은 연구순</option>
+                <option value="new">최신 등록순</option>
+              </select>
+            </label>
+          </div>
         </div>
         <p class="count" id="count" aria-live="polite"></p>
         <div class="board" id="board"></div>
@@ -189,7 +194,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=10"></script>
-<script src="js/app.js?v=10"></script>
+<script src="js/data.js?v=11"></script>
+<script src="js/app.js?v=11"></script>
 </body>
 </html>

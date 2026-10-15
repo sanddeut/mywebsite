@@ -140,17 +140,27 @@ a { color: inherit; }
 .stack { display: grid; gap: 14px; }
 
 .field { display: grid; gap: 6px; font-size: 13px; font-weight: 500; color: var(--muted); min-width: 0; }
-.field input, .field select, .field textarea, .search input, .sort select {
+.field input, .field select, .field textarea, .search input {
   width: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 15px; color: var(--ink);
 }
 .field textarea { resize: vertical; }
 .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; cursor: pointer; }
 .check input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--accent); flex: none; }
 
-.filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.search { flex: 1 1 240px; }
-.sort { flex: 0 0 auto; }
-.seg { display: flex; flex-wrap: wrap; gap: 6px; flex-basis: 100%; order: 3; }
+.filters { display: grid; gap: 12px; }
+.search-row { display: flex; gap: 8px; }
+.search { flex: 1 1 auto; min-width: 0; }
+.search-btn { flex: none; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.sort { flex: none; margin-left: auto; }
+.sort select {
+  appearance: none; -webkit-appearance: none; border: 0; background: transparent; cursor: pointer;
+  padding: 4px 16px 4px 4px; font-size: 13px; font-weight: 500; color: var(--muted);
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 6px center, right 2px center; background-size: 4px 4px; background-repeat: no-repeat;
+}
+.sort select:hover { color: var(--ink); }
 .seg button {
   border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: 6px 12px; font-size: 13px; cursor: pointer;
 }
