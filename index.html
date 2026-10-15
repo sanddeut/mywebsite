@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=14">
+<link rel="stylesheet" href="css/style.css?v=15">
 </head>
 <body>
 <header class="top">
@@ -85,6 +85,10 @@
                 <span class="sr">지역</span>
                 <select id="region-filter"></select>
               </label>
+              <label class="picker" id="district-wrap" hidden>
+                <span class="sr">시·군·구</span>
+                <select id="district-filter"></select>
+              </label>
               <div class="picker dates" role="group" aria-label="연구 날짜">
                 <label><span class="sr">연구 날짜 시작</span><input id="date-from" type="date"></label>
                 <span aria-hidden="true">~</span>
@@ -139,6 +143,8 @@
             </select></label>
           <label class="field"><span>지역 (대면일 때)</span>
             <select id="f-region" name="region"></select></label>
+          <label class="field"><span>시·군·구 (대면일 때)</span>
+            <select id="f-district" name="district"><option value="">시·도를 먼저 골라 주세요</option></select></label>
           <label class="field"><span>장소 (대면일 때)</span>
             <input id="f-location" name="location" placeholder="예: 위당관 312호"></label>
           <label class="field"><span>소요 시간 (분)</span>
@@ -209,7 +215,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=14"></script>
-<script src="js/app.js?v=14"></script>
+<script src="js/data.js?v=15"></script>
+<script src="js/app.js?v=15"></script>
 </body>
 </html>

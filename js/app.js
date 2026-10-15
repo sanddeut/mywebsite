@@ -23,7 +23,10 @@
   let myPosts = store.get('posts', []);
   let apps = store.get('apps', []);
   let profile = store.get('profile', { age: '', gender: '', region: '', onlineOnly: false, matchOnly: false });
-  const state = { q: '', region: '', from: '', to: '', sort: 'deadline' };
+  const state = { q: '', region: '', district: '', from: '', to: '', sort: 'deadline' };
+  const SIDO = Object.keys(window.REGIONS);
+  const place = s => [s.region, s.district].filter(Boolean).join(' ');
+  const districtOpts = (sido, blank) => `<option value="">${blank}</option>` + (window.REGIONS[sido] || []).map(d => `<option>${d}</option>`).join('');
 
   const allStudies = () => [...myPosts, ...samples].filter(s => daysUntil(s.deadline) >= 0);
   const appliedCount = s => s.applied + apps.filter(a => a.studyId === s.id).length;
@@ -52,8 +55,15 @@
   // ---- 연구 찾기 ----
   function initPickers() {
     $('#region-filter').innerHTML = '<option value="">지역 전체</option><option value="온라인">온라인</option>' +
-      window.REGIONS.map(r => `<option value="${r}">${r}</option>`).join('');
-    $('#region-filter').addEventListener('change', e => { state.region = e.target.value; renderBoard(); });
+      SIDO.map(r => `<option value="${r}">${r}</option>`).join('');
+    $('#region-filter').addEventListener('change', e => {
+      state.region = e.target.value; state.district = '';
+      const has = !!window.REGIONS[state.region];
+      $('#district-wrap').hidden = !has;
+      if (has) $('#district-filter').innerHTML = districtOpts(state.region, `${state.region} 전체`);
+      renderBoard();
+    });
+    $('#district-filter').addEventListener('change', e => { state.district = e.target.value; renderBoard(); });
     const onDate = () => {
       state.from = $('#date-from').value; state.to = $('#date-to').value;
       $('#date-to').min = state.from || addDays(0);
@@ -82,6 +92,7 @@
     let list = allStudies().filter(s => {
       if (state.region === '온라인' && s.mode !== '온라인') return false;
       if (state.region && state.region !== '온라인' && !(s.mode === '대면' && s.region === state.region)) return false;
+      if (state.district && s.district !== state.district) return false;
       // 고른 날짜 범위와 연구 기간이 하루라도 겹치면 보여요
       if (state.from && s.endDate && s.endDate < state.from) return false;
       if (state.to && s.startDate && s.startDate > state.to) return false;
@@ -119,7 +130,7 @@
       <button class="flyer-hit" data-open="${esc(s.id)}" aria-label="${esc(s.title)} 자세히 보기"></button>
       <header class="flyer-head">
         <span class="type">${esc(s.type)}</span>
-        <span class="mode ${s.mode === '온라인' ? 'online' : ''}">${s.mode === '온라인' ? '온라인' : esc(s.region) + ' 대면'}</span>
+        <span class="mode ${s.mode === '온라인' ? 'online' : ''}">${s.mode === '온라인' ? '온라인' : esc(place(s)) + ' 대면'}</span>
         <span class="dday">${ddayLabel(s)}</span>
       </header>
       <h3>${esc(s.title)}</h3>
@@ -153,7 +164,7 @@
 
     $('#detail-body').innerHTML = `
       <button class="close" type="button" data-close aria-label="닫기">×</button>
-      <p class="eyebrow">${esc(s.type)} · ${s.mode === '온라인' ? '온라인' : esc(s.region) + ' 대면'} · ${ddayLabel(s)}</p>
+      <p class="eyebrow">${esc(s.type)} · ${s.mode === '온라인' ? '온라인' : esc(place(s)) + ' 대면'} · ${ddayLabel(s)}</p>
       <h2 id="d-title">${esc(s.title)}</h2>
       <p class="org">${esc(s.school)} · ${esc(s.lab)}</p>
       <p class="summary">${esc(s.summary)}</p>
@@ -215,7 +226,10 @@
   function initPostForm() {
     const opts = (arr, blank) => (blank ? `<option value="">${blank}</option>` : '') + arr.map(x => `<option>${x}</option>`).join('');
     $('#f-type').innerHTML = opts(window.TYPES);
-    $('#f-region').innerHTML = opts(window.REGIONS, '온라인이면 비워 두세요');
+    $('#f-region').innerHTML = opts(SIDO, '온라인이면 비워 두세요');
+    $('#f-region').addEventListener('change', e => {
+      $('#f-district').innerHTML = e.target.value ? districtOpts(e.target.value, '시·군·구 선택') : '<option value="">시·도를 먼저 골라 주세요</option>';
+    });
     $('#f-deadline').min = addDays(0);
     $('#f-deadline').value = addDays(14);
 
@@ -229,6 +243,7 @@
       const v = id => $('#' + id).value.trim();
       const mode = v('f-mode');
       if (mode === '대면' && !v('f-region')) { $('#f-region').focus(); return showErr(err, '대면 연구는 지역을 골라 주세요.'); }
+      if (mode === '대면' && !v('f-district')) { $('#f-district').focus(); return showErr(err, '대면 연구는 시·군·구까지 골라 주세요.'); }
       if (v('f-end') < v('f-start')) { $('#f-end').focus(); return showErr(err, '연구 종료일이 시작일보다 빠를 수 없어요.'); }
       const ageMin = Number(v('f-agemin')), ageMax = Number(v('f-agemax'));
       if (ageMin > ageMax) return showErr(err, '최소 나이가 최대 나이보다 클 수 없어요.');
@@ -236,7 +251,7 @@
       const post = {
         id: 'm' + Date.now(), mine: true, createdAt: Date.now(),
         title: v('f-title'), school: v('f-school'), lab: v('f-lab'), summary: v('f-summary'),
-        type: v('f-type'), mode, region: mode === '대면' ? v('f-region') : '',
+        type: v('f-type'), mode, region: mode === '대면' ? v('f-region') : '', district: mode === '대면' ? v('f-district') : '',
         location: v('f-location') || (mode === '온라인' ? '온라인' : ''),
         minutes: Number(v('f-minutes')), pay: Number(v('f-pay')), capacity: Number(v('f-capacity')), applied: 0,
         ageMin, ageMax, gender: v('f-gender'),
@@ -246,6 +261,7 @@
       myPosts.unshift(post);
       store.set('posts', myPosts);
       f.reset();
+      $('#f-district').innerHTML = '<option value="">시·도를 먼저 골라 주세요</option>';
       $('#f-deadline').value = addDays(14);
       toast('공고를 올렸어요.');
       location.hash = 'find';
@@ -281,10 +297,10 @@
 
   // ---- 내 조건 ----
   function initProfile() {
-    $('#p-region').innerHTML = '<option value="">선택 안 함</option>' + window.REGIONS.map(r => `<option>${r}</option>`).join('');
+    $('#p-region').innerHTML = '<option value="">선택 안 함</option>' + SIDO.map(r => `<option>${r}</option>`).join('');
     $('#p-age').value = profile.age;
     $('#p-gender').value = profile.gender;
-    $('#p-region').value = profile.region;
+    $('#p-region').value = SIDO.includes(profile.region) ? profile.region : '';
     $('#p-online').checked = profile.onlineOnly;
     $('#p-match').checked = profile.matchOnly;
     $('#profile-form').addEventListener('input', () => {
