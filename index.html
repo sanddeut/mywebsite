@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MyVoice</title>
-<meta name="description" content="대학원생 연구자와 연구 참여자를 이어주는 모집·매칭 플랫폼">
+<meta name="description" content="대학원생 연구자와 연구 참여자를 이어주는 모집 매칭 플랫폼">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=23">
+<link rel="stylesheet" href="css/style.css?v=24">
 </head>
 <body>
 <header class="top">
@@ -50,11 +50,11 @@
             <select id="region-filter"></select>
           </label>
           <label class="picker" id="district-wrap" hidden>
-            <span class="sr">시·군·구</span>
+            <span class="sr">시군구</span>
             <select id="district-filter"></select>
           </label>
-          <button type="button" class="picker picker-btn" id="profile-toggle" aria-expanded="false" aria-controls="profile-form">내 조건</button>
           <button type="button" class="picker picker-btn" id="date-toggle" aria-expanded="false" aria-controls="date-panel">모집기간</button>
+          <button type="button" class="picker picker-btn" id="profile-toggle" aria-expanded="false" aria-controls="profile-form">내 조건</button>
         </div>
         <div id="date-panel" class="profile-panel date-panel" hidden>
           <label class="field">
@@ -117,7 +117,7 @@
             <input id="f-title" name="title" required maxlength="60" placeholder="예: 수면 습관과 작업기억에 관한 실험 연구"></label>
           <label class="field"><span>학교</span>
             <input id="f-school" name="school" required placeholder="예: 연세대학교"></label>
-          <label class="field"><span>학과·연구실</span>
+          <label class="field"><span>학과 및 연구실</span>
             <input id="f-lab" name="lab" required placeholder="예: 심리학과 인지신경과학 연구실"></label>
           <label class="field full"><span>연구 소개</span>
             <textarea id="f-summary" name="summary" rows="3" required maxlength="300" placeholder="참여자가 무엇을 하게 되는지 쉽게 적어 주세요."></textarea></label>
@@ -133,8 +133,8 @@
             </select></label>
           <label class="field"><span>지역 (대면일 때)</span>
             <select id="f-region" name="region"></select></label>
-          <label class="field"><span>시·군·구 (대면일 때)</span>
-            <select id="f-district" name="district"><option value="">시·도를 먼저 골라 주세요</option></select></label>
+          <label class="field"><span>시군구 (대면일 때)</span>
+            <select id="f-district" name="district"><option value="">시도를 먼저 골라 주세요</option></select></label>
           <label class="field"><span>장소 (대면일 때)</span>
             <input id="f-location" name="location" placeholder="예: 위당관 312호"></label>
           <label class="field"><span>소요 시간 (분)</span>
@@ -158,7 +158,7 @@
         </fieldset>
 
         <fieldset>
-          <legend>승인·연락</legend>
+          <legend>승인과 연락</legend>
           <label class="field"><span>IRB 승인번호</span>
             <input id="f-irb" name="irb" required placeholder="예: 7001988-202610-HR-123-01"></label>
           <label class="field"><span>연구 시작일</span>
@@ -195,7 +195,7 @@
 </main>
 
 <footer class="foot">
-  <div class="wrap">MyVoice · 내 의견이 가치가 되는 곳</div>
+  <div class="wrap sep"><span>MyVoice</span><span>내 의견이 가치가 되는 곳</span></div>
 </footer>
 
 <!-- 연구 상세 / 신청 -->
@@ -205,7 +205,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=23"></script>
-<script src="js/app.js?v=23"></script>
+<script src="js/data.js?v=24"></script>
+<script src="js/app.js?v=24"></script>
 </body>
 </html>

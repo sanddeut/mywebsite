@@ -126,7 +126,7 @@
     const matchChip = why === null ? '' : why.length
       ? `<span class="chip no" title="${esc(why.join(', '))}">조건 안 맞음</span>`
       : `<span class="chip ok">조건 맞음</span>`;
-    const target = `만 ${s.ageMin}~${s.ageMax}세${s.gender !== '무관' ? ' · ' + esc(s.gender) : ''}`;
+    const target = `<span class="sep"><span>만 ${s.ageMin}~${s.ageMax}세</span>${s.gender !== '무관' ? `<span>${esc(s.gender)}</span>` : ''}</span>`;
     return `
     <article class="flyer${d <= 3 ? ' urgent' : ''}">
       <button class="flyer-hit" data-open="${esc(s.id)}" aria-label="${esc(s.title)} 자세히 보기"></button>
@@ -139,7 +139,7 @@
       </div>
       <div class="card-title">
         <h3>${esc(s.title)}</h3>
-        <p class="org">${esc(s.school)} · ${esc(s.lab)}</p>
+        <p class="org sep"><span>${esc(s.school)}</span><span>${esc(s.lab)}</span></p>
       </div>
       <dl class="card-info">
         ${period(s) ? `<div><dt>연구 기간</dt><dd>${period(s)}</dd></div>` : ''}
@@ -166,9 +166,9 @@
 
     $('#detail-body').innerHTML = `
       <button class="close" type="button" data-close aria-label="닫기">×</button>
-      <p class="eyebrow">${esc(s.type)} · ${s.mode === '온라인' ? '온라인' : esc(place(s)) + ' 대면'} · ${ddayLabel(s)}</p>
+      <div class="card-chips"><span class="chip type">${esc(s.type)}</span><span class="chip place">${s.mode === '온라인' ? '온라인' : esc(place(s)) + ' 대면'}</span><span class="chip dday${daysUntil(s.deadline) <= 3 ? ' soon' : ''}">${ddayLabel(s)}</span></div>
       <h2 id="d-title">${esc(s.title)}</h2>
-      <p class="org">${esc(s.school)} · ${esc(s.lab)}</p>
+      <p class="org sep"><span>${esc(s.school)}</span><span>${esc(s.lab)}</span></p>
       <p class="summary">${esc(s.summary)}</p>
       <dl class="facts">
         <div><dt>사례비</dt><dd>${won(s.pay)}</dd></div>
@@ -230,7 +230,7 @@
     $('#f-type').innerHTML = opts(window.TYPES);
     $('#f-region').innerHTML = opts(SIDO, '온라인이면 비워 두세요');
     $('#f-region').addEventListener('change', e => {
-      $('#f-district').innerHTML = e.target.value ? districtOpts(e.target.value, '시·군·구 선택') : '<option value="">시·도를 먼저 골라 주세요</option>';
+      $('#f-district').innerHTML = e.target.value ? districtOpts(e.target.value, '시군구 선택') : '<option value="">시도를 먼저 골라 주세요</option>';
     });
     $('#f-deadline').min = addDays(0);
     $('#f-deadline').value = addDays(14);
@@ -245,7 +245,7 @@
       const v = id => $('#' + id).value.trim();
       const mode = v('f-mode');
       if (mode === '대면' && !v('f-region')) { $('#f-region').focus(); return showErr(err, '대면 연구는 지역을 골라 주세요.'); }
-      if (mode === '대면' && !v('f-district')) { $('#f-district').focus(); return showErr(err, '대면 연구는 시·군·구까지 골라 주세요.'); }
+      if (mode === '대면' && !v('f-district')) { $('#f-district').focus(); return showErr(err, '대면 연구는 시군구까지 골라 주세요.'); }
       if (v('f-end') < v('f-start')) { $('#f-end').focus(); return showErr(err, '연구 종료일이 시작일보다 빠를 수 없어요.'); }
       const ageMin = Number(v('f-agemin')), ageMax = Number(v('f-agemax'));
       if (ageMin > ageMax) return showErr(err, '최소 나이가 최대 나이보다 클 수 없어요.');
@@ -263,7 +263,7 @@
       myPosts.unshift(post);
       store.set('posts', myPosts);
       f.reset();
-      $('#f-district').innerHTML = '<option value="">시·도를 먼저 골라 주세요</option>';
+      $('#f-district').innerHTML = '<option value="">시도를 먼저 골라 주세요</option>';
       $('#f-deadline').value = addDays(14);
       toast('공고를 올렸어요.');
       location.hash = 'find';
@@ -277,7 +277,7 @@
     $('#my-apps').innerHTML = apps.length ? apps.slice().reverse().map(a => {
       const s = all.find(x => x.id === a.studyId);
       return `<div class="item">
-        <div><strong>${esc(a.title)}</strong><span>${esc(a.school)} · ${new Date(a.at).toLocaleDateString('ko-KR')} 신청</span></div>
+        <div><strong>${esc(a.title)}</strong><span class="sep"><span>${esc(a.school)}</span><span>${new Date(a.at).toLocaleDateString('ko-KR')} 신청</span></span></div>
         ${s ? `<button class="btn ghost" data-open="${esc(s.id)}">공고 보기</button>` : '<span class="muted">마감됨</span>'}
         <button class="btn ghost" data-cancel="${esc(a.studyId)}">신청 취소</button>
       </div>`;
@@ -287,7 +287,7 @@
       const list = apps.filter(a => a.studyId === p.id);
       return `<div class="item col">
         <div class="item-top">
-          <div><strong>${esc(p.title)}</strong><span>${esc(p.type)} · 마감 ${p.deadline.replaceAll('-', '.')} · 신청 ${list.length}/${p.capacity}명</span></div>
+          <div><strong>${esc(p.title)}</strong><span class="sep"><span>${esc(p.type)}</span><span>마감 ${p.deadline.replaceAll('-', '.')}</span><span>신청 ${list.length}/${p.capacity}명</span></span></div>
           <button class="btn ghost" data-remove="${esc(p.id)}">공고 내리기</button>
         </div>
         ${list.length ? `<div class="table-wrap"><table><thead><tr><th>이름</th><th>연락처</th><th>가능한 시간</th></tr></thead><tbody>
@@ -313,7 +313,7 @@
     const btn = $('#profile-toggle'), panel = $('#profile-form');
     const label = () => {
       const parts = [profile.age && `${profile.age}세`, profile.gender].filter(Boolean);
-      btn.textContent = parts.length ? parts.join(' · ') : '내 조건';
+      btn.textContent = parts.length ? parts.join(', ') : '내 조건';
       btn.classList.toggle('on', parts.length > 0);
     };
     $('#p-age').value = profile.age;

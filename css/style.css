@@ -54,7 +54,7 @@
 }
 
 /* 글꼴: 전부 Pretendard
-   레이아웃: 캠퍼스 게시판. 왼쪽 '내 조건' 카드 + 오른쪽 모집 전단(아래 뜯는 띠에 사례비·시간) 격자 */
+   레이아웃: 한 열. 검색과 필터 한 줄, 아래 카드 격자 (칩 → 제목 → 정보 → 사례비) */
 :root {
   --bg: #ffffff;          /* 페이지 바탕 */
   --soft: #f1f4f2;        /* 닫기 버튼 등 옅은 면 */
@@ -200,6 +200,12 @@ a { color: inherit; }
 .chip.ok { background: var(--accent-soft); color: var(--accent); height: 22px; }
 .chip.no { background: var(--danger-soft); color: var(--danger); height: 22px; }
 .chip.done, .chip.mine { background: var(--ink); color: var(--paper); }
+.sep > span + span::before { /* 가운데 점 대신 얇은 세로선 */
+  content: ""; display: inline-block; width: 1px; height: .8em; margin: 0 8px; vertical-align: -.05em; background: var(--line);
+}
+.chip.dday.soon { background: var(--urgent-soft); color: var(--urgent); }
+.sheet .card-chips { margin-bottom: 4px; padding-right: 44px; }
+.sheet .chip.dday { margin-left: 0; }
 .card-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 
 .card-title { display: grid; gap: 6px; }
