@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=29">
+<link rel="stylesheet" href="css/style.css?v=30">
 </head>
 <body>
 <header class="top">
@@ -50,6 +50,16 @@
           </label>
           <button type="button" class="picker picker-btn" id="region-toggle" aria-expanded="false" aria-controls="region-panel">지역</button>
           <button type="button" class="picker picker-btn" id="date-toggle" aria-expanded="false" aria-controls="date-panel">모집기간</button>
+          <label class="picker">
+            <span class="sr">소요시간</span>
+            <select id="time-filter">
+              <option value="">소요시간 전체</option>
+              <option value="0-30">30분 이내</option>
+              <option value="0-60">1시간 이내</option>
+              <option value="0-120">2시간 이내</option>
+              <option value="121-">2시간 넘게</option>
+            </select>
+          </label>
           <button type="button" class="picker picker-btn" id="profile-toggle" aria-expanded="false" aria-controls="profile-form">내 조건</button>
         </div>
         <div id="region-panel" class="profile-panel region-panel" hidden>
@@ -203,7 +213,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=29"></script>
-<script src="js/app.js?v=29"></script>
+<script src="js/data.js?v=30"></script>
+<script src="js/app.js?v=30"></script>
 </body>
 </html>
