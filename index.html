@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=20">
+<link rel="stylesheet" href="css/style.css?v=21">
 </head>
 <body>
 <header class="top">
@@ -54,12 +54,18 @@
             <select id="district-filter"></select>
           </label>
           <button type="button" class="picker picker-btn" id="profile-toggle" aria-expanded="false" aria-controls="profile-form">내 조건</button>
-          <div class="picker dates" role="group" aria-label="연구 날짜">
-            <label><span class="sr">연구 날짜 시작</span><input id="date-from" type="date"></label>
-            <span aria-hidden="true">~</span>
-            <label><span class="sr">연구 날짜 끝</span><input id="date-to" type="date"></label>
-            <button type="button" id="date-clear" class="date-clear" aria-label="날짜 지우기" hidden>×</button>
-          </div>
+          <button type="button" class="picker picker-btn" id="date-toggle" aria-expanded="false" aria-controls="date-panel">모집기간</button>
+        </div>
+        <div id="date-panel" class="profile-panel date-panel" hidden>
+          <label class="field">
+            <span>시작일</span>
+            <input id="date-from" type="date">
+          </label>
+          <label class="field">
+            <span>종료일</span>
+            <input id="date-to" type="date">
+          </label>
+          <button type="button" id="date-clear" class="btn ghost" hidden>날짜 지우기</button>
         </div>
         <form id="profile-form" class="profile-panel" hidden>
           <label class="field">
@@ -199,7 +205,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=20"></script>
-<script src="js/app.js?v=20"></script>
+<script src="js/data.js?v=21"></script>
+<script src="js/app.js?v=21"></script>
 </body>
 </html>

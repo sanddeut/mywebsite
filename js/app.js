@@ -67,8 +67,12 @@
       state.from = $('#date-from').value; state.to = $('#date-to').value;
       $('#date-to').min = state.from || addDays(0);
       $('#date-clear').hidden = !(state.from || state.to);
+      const tb = $('#date-toggle');
+      tb.textContent = state.from || state.to ? `${md(state.from) || '처음'} ~ ${md(state.to) || '끝'}` : '모집기간';
+      tb.classList.toggle('on', !!(state.from || state.to));
       renderBoard();
     };
+    $('#date-toggle').addEventListener('click', () => togglePanel('date'));
     $('#date-from').min = addDays(0);
     $('#date-to').min = addDays(0);
     $('#date-from').addEventListener('change', onDate);
@@ -293,6 +297,17 @@
     }).join('') : `<div class="empty"><strong>올린 공고가 없어요.</strong><span>「연구 등록」에서 참여자 모집 공고를 올릴 수 있어요.</span></div>`;
   }
 
+  // ---- 필터 패널: 한 번에 하나만 열려요 ----
+  const PANELS = { date: ['#date-toggle', '#date-panel', '#date-from'], profile: ['#profile-toggle', '#profile-form', '#p-age'] };
+  function togglePanel(name) {
+    Object.entries(PANELS).forEach(([key, [btnSel, panelSel, focusSel]]) => {
+      const open = key === name && $(panelSel).hidden;
+      $(panelSel).hidden = !open;
+      $(btnSel).setAttribute('aria-expanded', String(open));
+      if (open) $(focusSel).focus();
+    });
+  }
+
   // ---- 내 조건 ----
   function initProfile() {
     const btn = $('#profile-toggle'), panel = $('#profile-form');
@@ -305,11 +320,7 @@
     $('#p-gender').value = profile.gender;
     $('#p-match').checked = profile.matchOnly;
     label();
-    btn.addEventListener('click', () => {
-      panel.hidden = !panel.hidden;
-      btn.setAttribute('aria-expanded', String(!panel.hidden));
-      if (!panel.hidden) $('#p-age').focus();
-    });
+    btn.addEventListener('click', () => togglePanel('profile'));
     panel.addEventListener('submit', e => e.preventDefault());
     panel.addEventListener('input', () => {
       profile = { age: $('#p-age').value, gender: $('#p-gender').value, matchOnly: $('#p-match').checked };
