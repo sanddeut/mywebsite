@@ -91,9 +91,9 @@ b, strong { font-weight: 600; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font: 400 15px/1.65 var(--f-body); word-break: keep-all; overflow-wrap: anywhere;
+  font: 400 15px/1.65 var(--f-body); letter-spacing: -.01em; word-break: keep-all; overflow-wrap: anywhere;
 }
-h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.3; letter-spacing: -.02em; }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.3; letter-spacing: -.03em; }
 button, input, select, textarea { font: inherit; color: inherit; }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -123,8 +123,8 @@ a { color: inherit; }
 
 /* 히어로: 짧게, 숫자는 제목 아래 한 줄 */
 .hero { padding-block: 48px 36px; }
-.eyebrow { margin: 0 0 10px; font-size: 13px; font-weight: 500; letter-spacing: .04em; color: var(--accent); }
-.hero h1 { font: 600 clamp(30px, 4.4vw, 46px)/1.25 var(--f-display); letter-spacing: -.03em; }
+.eyebrow { margin: 0 0 10px; font-size: 13px; font-weight: 500; letter-spacing: .03em; color: var(--accent); }
+.hero h1 { font: 600 clamp(30px, 4.4vw, 46px)/1.25 var(--f-display); letter-spacing: -.04em; }
 .lede { max-width: 60ch; margin: 16px 0 0; color: var(--muted); font-size: 16px; }
 .hero-stats { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 20px 0 0; font-size: 14px; color: var(--muted); }
 .hero-stats b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -216,7 +216,7 @@ a { color: inherit; }
   margin: auto -20px 0; padding: 16px 20px 18px; border-top: 2px dashed var(--line);
 }
 .pay { display: flex; align-items: baseline; gap: 8px; }
-.pay b { font-size: 16px; font-weight: 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.pay b { font-size: 16px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .pay span { font-size: 13px; color: var(--muted); }
 .seats { font-size: 12px; font-weight: 500; color: var(--muted); }
 .seats.few { color: var(--urgent); }
