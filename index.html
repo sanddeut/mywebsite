@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=12">
+<link rel="stylesheet" href="css/style.css?v=13">
 </head>
 <body>
 <header class="top">
@@ -80,7 +80,22 @@
             <button type="submit" class="btn primary search-btn">검색</button>
           </form>
           <div class="chip-row">
-            <div class="seg" role="group" aria-label="연구 유형" id="type-filter"></div>
+            <div class="pickers">
+              <label class="picker">
+                <span class="sr">지역</span>
+                <select id="region-filter"></select>
+              </label>
+              <label class="picker">
+                <span class="sr">기간</span>
+                <select id="period-filter">
+                  <option value="">마감 기간 전체</option>
+                  <option value="3">3일 안에 마감</option>
+                  <option value="7">일주일 안에 마감</option>
+                  <option value="14">2주 안에 마감</option>
+                  <option value="30">한 달 안에 마감</option>
+                </select>
+              </label>
+            </div>
             <label class="sort">
               <span class="sr">정렬</span>
               <select id="sort">
@@ -194,7 +209,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=12"></script>
-<script src="js/app.js?v=12"></script>
+<script src="js/data.js?v=13"></script>
+<script src="js/app.js?v=13"></script>
 </body>
 </html>
