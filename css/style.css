@@ -179,45 +179,47 @@ a { color: inherit; }
 }
 .sort select:hover { color: var(--ink); }
 
-/* 카드 */
+/* 카드: 칩 → 제목 묶음 → 정보 두 줄 → 사례비 바닥. 묶음 안은 촘촘하게, 묶음 사이는 넉넉하게 */
 .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .flyer {
-  position: relative; display: flex; flex-direction: column; gap: 8px;
-  background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 20px 20px 0;
+  position: relative; display: flex; flex-direction: column; gap: 18px; overflow: hidden;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 20px 20px 0;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 .flyer:hover { border-color: var(--muted); box-shadow: var(--shadow); }
-.flyer::before { /* 카드 안쪽 왼쪽 위 작은 점 */
-  content: ""; flex: none; width: 8px; height: 8px; margin-bottom: 10px;
-  border-radius: 50%; background: var(--line);
-}
-.flyer-hit { position: absolute; inset: 0; z-index: 1; background: none; border: 0; cursor: pointer; border-radius: 14px; }
-.flyer-head { display: flex; gap: 8px; align-items: center; font-size: 12px; font-weight: 600; }
-.type { color: var(--accent); }
-.mode { color: var(--muted); }
-.dday { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--muted); }
-.urgent .dday { color: var(--urgent); }
-.flyer h3 { font: 700 17px/1.45 var(--f-display); margin-top: 2px; }
-.org { margin: 0; font-size: 13px; color: var(--muted); }
-.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
-.meta > span:first-child { margin-right: 4px; }
-.chip { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-.chip.ok { background: var(--accent-soft); color: var(--accent); }
-.chip.no { background: var(--danger-soft); color: var(--danger); }
+.flyer-hit { position: absolute; inset: 0; z-index: 1; background: none; border: 0; cursor: pointer; border-radius: 16px; }
+
+.chip { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 7px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.chip.type { background: var(--accent-soft); color: var(--accent); }
+.chip.place { background: var(--soft); color: var(--muted); }
+.chip.dday { margin-left: auto; background: var(--soft); color: var(--muted); font-variant-numeric: tabular-nums; }
+.urgent .chip.dday { background: var(--urgent-soft); color: var(--urgent); }
+.chip.ok { background: var(--accent-soft); color: var(--accent); height: 22px; }
+.chip.no { background: var(--danger-soft); color: var(--danger); height: 22px; }
 .chip.done, .chip.mine { background: var(--ink); color: var(--paper); }
+.card-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 
-.fill { display: flex; align-items: center; gap: 10px; margin-top: 4px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.bar { flex: 1; height: 4px; background: var(--soft); border-radius: 2px; overflow: hidden; }
-.bar i { display: block; height: 100%; background: var(--accent); }
-.urgent .bar i { background: var(--urgent); }
+.card-title { display: grid; gap: 6px; }
+.flyer h3 { font: 700 18px/1.4 var(--f-display); }
+.org { margin: 0; font-size: 13px; color: var(--muted); }
 
-.tabs-tear {
-  display: flex; align-items: baseline; justify-content: space-between; margin: 12px -20px 0; padding: 14px 20px 16px;
-  border-top: 1px solid var(--line);
+.card-info { display: grid; gap: 6px; margin: 0; font-size: 13px; }
+.card-info div { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 8px; }
+.card-info dt { color: var(--muted); }
+.card-info dd { margin: 0; color: var(--ink); font-weight: 500; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+
+.card-foot {
+  position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: auto -20px 0; padding: 16px 20px 18px; border-top: 1px solid var(--line);
 }
-.tabs-tear span { display: flex; align-items: baseline; gap: 6px; font-size: 12px; color: var(--muted); }
-.tabs-tear span:first-child b { font-size: 17px; color: var(--ink); }
-.tabs-tear b { font-weight: 700; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pay { display: flex; align-items: baseline; gap: 8px; }
+.pay b { font-size: 20px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.pay span { font-size: 13px; color: var(--muted); }
+.seats { font-size: 12px; font-weight: 600; color: var(--muted); }
+.seats.few { color: var(--urgent); }
+.card-foot .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--soft); }
+.card-foot .bar i { display: block; height: 100%; background: var(--accent); }
+.urgent .card-foot .bar i { background: var(--urgent); }
 
 .empty { display: grid; gap: 4px; padding: 28px; text-align: center; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); background: var(--paper); }
 .empty strong { color: var(--ink); }
