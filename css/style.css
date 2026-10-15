@@ -85,8 +85,7 @@ a { color: inherit; }
   position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px);
   background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: var(--shadow);
 }
-.profile-card h2 { font: 700 18px var(--f-display); }
-.hint { margin: 6px 0 16px; font-size: 13px; color: var(--muted); }
+.profile-card h2 { font: 700 18px var(--f-display); margin-bottom: 16px; }
 .stack { display: grid; gap: 14px; }
 
 .field { display: grid; gap: 6px; font-size: 13px; font-weight: 500; color: var(--muted); min-width: 0; }
@@ -143,7 +142,7 @@ a { color: inherit; }
 .urgent .bar i { background: var(--urgent); }
 
 .tabs-tear {
-  display: grid; grid-template-columns: repeat(3, 1fr); margin: 6px -18px 0;
+  display: grid; grid-template-columns: repeat(2, 1fr); margin: 6px -18px 0;
   border-top: 2px dashed var(--line);
 }
 .tabs-tear span {

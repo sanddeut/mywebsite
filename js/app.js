@@ -45,7 +45,6 @@
     const d = daysUntil(s.deadline);
     return d === 0 ? '오늘 마감' : `D-${d}`;
   }
-  function payPerHour(s) { return Math.round(s.pay / (s.minutes / 60) / 100) * 100; }
   function duration(m) { return m >= 60 ? `${Math.floor(m / 60)}시간${m % 60 ? ' ' + (m % 60) + '분' : ''}` : `${m}분`; }
 
   // ---- 연구 찾기 ----
@@ -75,7 +74,7 @@
     });
     const sorters = {
       deadline: (a, b) => a.deadline.localeCompare(b.deadline),
-      pay: (a, b) => payPerHour(b) - payPerHour(a),
+      pay: (a, b) => b.pay - a.pay,
       short: (a, b) => a.minutes - b.minutes,
       new: (a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0) || (a.mine ? -1 : 1)
     };
@@ -120,7 +119,6 @@
       <footer class="tabs-tear" aria-hidden="true">
         <span><b>${won(s.pay)}</b>사례비</span>
         <span><b>${duration(s.minutes)}</b>소요</span>
-        <span><b>${won(payPerHour(s))}</b>시간당</span>
       </footer>
     </article>`;
   }
