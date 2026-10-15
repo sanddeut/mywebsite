@@ -213,7 +213,7 @@ a { color: inherit; }
   margin: auto -20px 0; padding: 16px 20px 18px; border-top: 1px solid var(--line);
 }
 .pay { display: flex; align-items: baseline; gap: 8px; }
-.pay b { font-size: 20px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.pay b { font-size: 16px; font-weight: 700; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 .pay span { font-size: 13px; color: var(--muted); }
 .seats { font-size: 12px; font-weight: 600; color: var(--muted); }
 .seats.few { color: var(--urgent); }
