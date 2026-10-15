@@ -1,4 +1,5 @@
-/* 레이아웃: 캠퍼스 게시판. 왼쪽 '내 조건' 카드 + 오른쪽 모집 전단(아래 뜯는 띠에 사례비·시간) 격자 */
+/* 글꼴: 전부 Pretendard
+   레이아웃: 캠퍼스 게시판. 왼쪽 '내 조건' 카드 + 오른쪽 모집 전단(아래 뜯는 띠에 사례비·시간) 격자 */
 :root {
   --bg: #eef1ee;          /* 게시판 바탕 */
   --paper: #ffffff;       /* 전단 종이 */
@@ -13,9 +14,9 @@
   --danger-soft: #f8e1df;
   --shadow: 0 1px 2px rgb(24 34 45 / .06), 0 6px 18px rgb(24 34 45 / .06);
 
-  --f-display: "Gowun Batang", "Nanum Myeongjo", "AppleMyungjo", serif;
-  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-display: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-body: var(--f-display);
+  --f-mono: var(--f-display);  /* 숫자는 tabular-nums로 자릿수 맞춤 */
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -34,12 +35,12 @@ body {
   margin: 0; background: var(--bg); color: var(--ink);
   font: 400 15px/1.65 var(--f-body); word-break: keep-all; overflow-wrap: anywhere;
 }
-h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.3; }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.3; letter-spacing: -.02em; }
 button, input, select, textarea { font: inherit; color: inherit; }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-.mono { font-family: var(--f-mono); font-size: .92em; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
 .sel { user-select: all; }
 .muted { color: var(--muted); }
 
@@ -56,7 +57,7 @@ a { color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .brand-mark {
   width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%;
-  border: 2px solid var(--accent); color: var(--accent); font: 700 17px var(--f-display); transform: rotate(-8deg);
+  border: 2px solid var(--accent); color: var(--accent); font: 800 16px var(--f-display); transform: rotate(-8deg);
 }
 .brand-name { font: 700 20px var(--f-display); letter-spacing: -.01em; }
 .tabs { display: flex; gap: 4px; }
@@ -70,7 +71,7 @@ a { color: inherit; }
 /* 히어로 */
 .hero-inner { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; align-items: end; padding-block: 48px 36px; }
 .eyebrow { margin: 0 0 10px; font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
-.hero h1 { font: 700 clamp(28px, 4.2vw, 44px)/1.25 var(--f-display); letter-spacing: -.02em; }
+.hero h1 { font: 700 clamp(28px, 4.2vw, 44px)/1.3 var(--f-display); letter-spacing: -.03em; }
 .lede { max-width: 60ch; margin: 16px 0 0; color: var(--muted); font-size: 16px; }
 .hero-stats { margin: 0; display: grid; gap: 12px; }
 .hero-stats div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px dashed var(--line); padding-bottom: 8px; }
@@ -125,7 +126,7 @@ a { color: inherit; }
 .flyer-head { display: flex; gap: 8px; align-items: center; font-size: 12px; font-weight: 600; }
 .type { color: var(--accent); }
 .mode { color: var(--muted); }
-.dday { margin-left: auto; font-family: var(--f-mono); color: var(--muted); }
+.dday { margin-left: auto; font-family: var(--f-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
 .urgent .dday { color: var(--urgent); }
 .flyer h3 { font: 700 18px/1.4 var(--f-display); }
 .org { margin: 0; font-size: 13px; color: var(--muted); }
@@ -150,7 +151,7 @@ a { color: inherit; }
   border-right: 1px dashed var(--line);
 }
 .tabs-tear span:last-child { border-right: 0; }
-.tabs-tear b { font: 500 13px var(--f-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.tabs-tear b { font: 600 13px var(--f-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
 
 .empty { display: grid; gap: 4px; padding: 28px; text-align: center; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); background: var(--paper); }
 .empty strong { color: var(--ink); }
