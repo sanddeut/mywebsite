@@ -131,7 +131,7 @@ a { color: inherit; }
 
 /* 찾기 화면: 한 열. 검색 → 필터 한 줄 → 결과 */
 .find { padding-block: 0 72px; }
-.toolbar { display: grid; gap: 12px; }
+.toolbar { display: grid; gap: 12px; padding-bottom: 20px; }
 .stack { display: grid; gap: 14px; }
 
 .field { display: grid; gap: 6px; font-size: 13px; font-weight: 400; color: var(--muted); min-width: 0; }
@@ -191,53 +191,47 @@ a { color: inherit; }
 }
 .sort select:hover { color: var(--ink); }
 
-/* 카드: 칩 → 제목 묶음 → 정보 두 줄 → 사례비 바닥. 묶음 안은 촘촘하게, 묶음 사이는 넉넉하게 */
+/* 카드: 제목 → 사례비 → 남은 기간과 신청 현황 → 테두리 태그 */
 .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .flyer {
-  position: relative; display: flex; flex-direction: column; gap: 18px; overflow: hidden;
-  background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 20px 20px 0;
+  position: relative; display: flex; flex-direction: column; gap: 18px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 .flyer:hover { border-color: var(--muted); box-shadow: var(--shadow); }
 .flyer-hit { position: absolute; inset: 0; z-index: 1; background: none; border: 0; cursor: pointer; border-radius: 16px; }
 
+.card-title { display: grid; gap: 6px; }
+.flyer h3 { font: 600 18px/1.4 var(--f-display); text-wrap: pretty; }
+.where { color: var(--ink); }
+.reward { margin: 0; font-size: 15px; color: var(--muted); }
+
+.status { display: flex; align-items: center; margin: 0; font-size: 15px; font-variant-numeric: tabular-nums; }
+.status b { font-size: 18px; font-weight: 600; }
+.urgent .status b { color: var(--urgent); }
+.applied { color: var(--ink); }
+.applied::before { content: ""; display: inline-block; width: 1px; height: 14px; margin: 0 12px; vertical-align: -2px; background: var(--line); }
+.applied em { font-style: normal; font-weight: 500; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+.tag {
+  display: inline-flex; align-items: center; height: 30px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px;
+  font-size: 13px; color: var(--ink); background: var(--paper); white-space: nowrap;
+}
+.tag.ok { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+.tag.no { border-color: transparent; background: var(--danger-soft); color: var(--danger); }
+.tag.solid { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+
+/* 상세 화면 윗줄 칩 */
 .chip { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 7px; font-size: 12px; font-weight: 500; white-space: nowrap; }
 .chip.type { background: var(--accent-soft); color: var(--accent); }
-.chip.place { background: var(--soft); color: var(--muted); }
-.chip.dday { margin-left: auto; background: var(--soft); color: var(--muted); font-variant-numeric: tabular-nums; }
-.urgent .chip.dday { background: var(--urgent-soft); color: var(--urgent); }
-.chip.ok { background: var(--accent-soft); color: var(--accent); height: 22px; }
-.chip.no { background: var(--danger-soft); color: var(--danger); height: 22px; }
-.chip.done, .chip.mine { background: var(--ink); color: var(--paper); }
+.chip.place, .chip.dday { background: var(--soft); color: var(--muted); font-variant-numeric: tabular-nums; }
+.chip.dday.soon { background: var(--urgent-soft); color: var(--urgent); }
+.card-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.sheet .card-chips { margin-bottom: 4px; padding-right: 44px; }
 .sep > span + span::before { /* 가운데 점 대신 얇은 세로선 */
   content: ""; display: inline-block; width: 1px; height: .8em; margin: 0 8px; vertical-align: -.05em; background: var(--line);
 }
-.chip.dday.soon { background: var(--urgent-soft); color: var(--urgent); }
-.sheet .card-chips { margin-bottom: 4px; padding-right: 44px; }
-.sheet .chip.dday { margin-left: 0; }
-.card-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-
-.card-title { display: grid; gap: 6px; }
-.flyer h3 { font: 600 18px/1.4 var(--f-display); }
-.org { margin: 0; font-size: 13px; color: var(--muted); }
-
-.card-info { display: grid; gap: 6px; margin: 0; font-size: 13px; }
-.card-info div { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 8px; }
-.card-info dt { color: var(--muted); }
-.card-info dd { margin: 0; color: var(--ink); font-weight: 400; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
-
-.card-foot {
-  position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  margin: auto -20px 0; padding: 16px 20px 18px; border-top: 2px dashed var(--line);
-}
-.pay { display: flex; align-items: baseline; gap: 8px; }
-.pay b { font-size: 16px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.pay span { font-size: 13px; color: var(--muted); }
-.seats { font-size: 12px; font-weight: 500; color: var(--muted); }
-.seats.few { color: var(--urgent); }
-.card-foot .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--soft); }
-.card-foot .bar i { display: block; height: 100%; background: var(--accent); }
-.urgent .card-foot .bar i { background: var(--urgent); }
 
 .empty { display: grid; gap: 4px; padding: 28px; text-align: center; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); background: var(--paper); }
 .empty strong { color: var(--ink); }

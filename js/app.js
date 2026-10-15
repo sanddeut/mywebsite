@@ -134,39 +134,34 @@
 
   function card(s) {
     const filled = appliedCount(s);
-    const left = Math.max(0, s.capacity - filled);
-    const ratio = Math.min(1, filled / s.capacity);
     const d = daysUntil(s.deadline);
     const why = profileFilled() ? mismatch(s) : null;
-    const matchChip = why === null ? '' : why.length
-      ? `<span class="chip no" title="${esc(why.join(', '))}">조건 안 맞음</span>`
-      : `<span class="chip ok">조건 맞음</span>`;
-    const target = `<span class="sep"><span>만 ${s.ageMin}~${s.ageMax}세</span>${s.gender !== '무관' ? `<span>${esc(s.gender)}</span>` : ''}</span>`;
+    const where = s.mode === '온라인' ? '온라인' : place(s);
+    const tags = [
+      why === null ? '' : why.length
+        ? `<span class="tag no" title="${esc(why.join(', '))}">조건 안 맞음</span>`
+        : '<span class="tag ok">조건 맞음</span>',
+      hasApplied(s.id) ? '<span class="tag solid">신청함</span>' : '',
+      s.mine ? '<span class="tag solid">내 공고</span>' : '',
+      `<span class="tag">${esc(s.type)}</span>`,
+      `<span class="tag">${duration(s.minutes)}</span>`,
+      `<span class="tag">만 ${s.ageMin}~${s.ageMax}세${s.gender !== '무관' ? ' ' + esc(s.gender) : ''}</span>`
+    ].join('');
     return `
     <article class="flyer${d <= 3 ? ' urgent' : ''}">
       <button class="flyer-hit" data-open="${esc(s.id)}" aria-label="${esc(s.title)} 자세히 보기"></button>
-      <div class="card-chips">
-        <span class="chip type">${esc(s.type)}</span>
-        <span class="chip place">${s.mode === '온라인' ? '온라인' : esc(place(s))}</span>
-        ${hasApplied(s.id) ? '<span class="chip done">신청함</span>' : ''}
-        ${s.mine ? '<span class="chip mine">내 공고</span>' : ''}
-        <span class="chip dday">${ddayLabel(s)}</span>
-      </div>
       <div class="card-title">
-        <h3>${esc(s.title)}</h3>
-        <p class="org sep"><span>${esc(s.school)}</span><span>${esc(s.lab)}</span></p>
+        <h3><span class="where">[${esc(where)}]</span> ${esc(s.title)}</h3>
+        <p class="reward">사례비 ${won(s.pay)}</p>
       </div>
-      <dl class="card-info">
-        ${period(s) ? `<div><dt>연구 기간</dt><dd>${period(s)}</dd></div>` : ''}
-        <div><dt>참여 대상</dt><dd>${target} ${matchChip}</dd></div>
-      </dl>
-      <footer class="card-foot">
-        <div class="pay"><b>${won(s.pay)}</b><span>${duration(s.minutes)}</span></div>
-        <div class="seats${left <= s.capacity * 0.1 ? ' few' : ''}">${left ? `${left}자리 남음` : '모집 완료'}</div>
-        <div class="bar" aria-label="모집 ${filled}명 / ${s.capacity}명"><i style="width:${(ratio * 100).toFixed(0)}%"></i></div>
-      </footer>
+      <p class="status">
+        <b>${d === 0 ? '오늘 마감' : `${d}일 남음`}</b>
+        <span class="applied">신청 <em>${filled.toLocaleString('ko-KR')}</em> / ${s.capacity.toLocaleString('ko-KR')}명</span>
+      </p>
+      <div class="tags">${tags}</div>
     </article>`;
   }
+
 
 
   // ---- 상세 + 신청 ----
