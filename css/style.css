@@ -110,12 +110,9 @@ a { color: inherit; }
 /* 상단 */
 .top { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--line); }
 .top-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.brand-mark {
-  width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%;
-  border: 2px solid var(--accent); color: var(--accent); font: 800 16px var(--f-display); transform: rotate(-8deg);
-}
-.brand-name { font: 700 20px var(--f-display); letter-spacing: -.01em; }
+.brand { display: flex; align-items: center; text-decoration: none; }
+.brand-name { font: 700 26px/1 "Fredoka", "Pretendard", sans-serif; letter-spacing: -.01em; color: var(--ink); }
+.brand-name em { font-style: normal; color: var(--accent); }
 .tabs { display: flex; gap: 4px; }
 .tabs a { text-decoration: none; padding: 8px 14px; border-radius: 999px; font-weight: 500; color: var(--muted); }
 .tabs a:hover { color: var(--ink); }
