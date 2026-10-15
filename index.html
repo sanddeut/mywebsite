@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=15">
+<link rel="stylesheet" href="css/style.css?v=16">
 </head>
 <body>
 <header class="top">
@@ -29,20 +29,39 @@
 <main>
   <!-- 연구 찾기 -->
   <section id="view-find" class="view" data-view="find">
-    <div class="hero">
-      <div class="wrap hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow">대학원 연구에 참여해 보세요</p>
-          <h1>내 의견이<br>가치가 되는 곳</h1>
-        </div>
-        <dl class="hero-stats" id="hero-stats"></dl>
-      </div>
+    <div class="wrap hero">
+      <p class="eyebrow">대학원 연구에 참여해 보세요</p>
+      <h1>내 의견이<br>가치가 되는 곳</h1>
+      <p class="hero-stats" id="hero-stats"></p>
     </div>
 
-    <div class="wrap find-grid">
-      <aside class="profile-card" aria-labelledby="profile-title">
-        <h2 id="profile-title">내 조건</h2>
-        <form id="profile-form" class="stack">
+    <div class="wrap find">
+      <div class="toolbar">
+        <form class="search-row" id="search-form" role="search">
+          <label class="search">
+            <span class="sr">검색</span>
+            <input id="q" type="search" placeholder="연구 주제, 학교, 학과로 검색">
+          </label>
+          <button type="submit" class="btn primary search-btn">검색</button>
+        </form>
+        <div class="pickers">
+          <label class="picker">
+            <span class="sr">지역</span>
+            <select id="region-filter"></select>
+          </label>
+          <label class="picker" id="district-wrap" hidden>
+            <span class="sr">시·군·구</span>
+            <select id="district-filter"></select>
+          </label>
+          <button type="button" class="picker picker-btn" id="profile-toggle" aria-expanded="false" aria-controls="profile-form">내 조건</button>
+          <div class="picker dates" role="group" aria-label="연구 날짜">
+            <label><span class="sr">연구 날짜 시작</span><input id="date-from" type="date"></label>
+            <span aria-hidden="true">~</span>
+            <label><span class="sr">연구 날짜 끝</span><input id="date-to" type="date"></label>
+            <button type="button" id="date-clear" class="date-clear" aria-label="날짜 지우기" hidden>×</button>
+          </div>
+        </div>
+        <form id="profile-form" class="profile-panel" hidden>
           <label class="field">
             <span>나이</span>
             <input id="p-age" name="age" type="number" min="14" max="99" inputmode="numeric" placeholder="예: 27">
@@ -55,61 +74,26 @@
               <option>남성</option>
             </select>
           </label>
-          <label class="field">
-            <span>사는 지역</span>
-            <select id="p-region" name="region"></select>
-          </label>
-          <label class="check">
-            <input id="p-online" name="onlineOnly" type="checkbox">
-            <span>온라인 연구만 볼래요</span>
-          </label>
           <label class="check">
             <input id="p-match" name="matchOnly" type="checkbox">
             <span>조건 맞는 연구만 보기</span>
           </label>
         </form>
-      </aside>
-
-      <div class="results">
-        <div class="filters">
-          <form class="search-row" id="search-form" role="search">
-            <label class="search">
-              <span class="sr">검색</span>
-              <input id="q" type="search" placeholder="연구 주제, 학교, 학과로 검색">
-            </label>
-            <button type="submit" class="btn primary search-btn">검색</button>
-          </form>
-          <div class="chip-row">
-            <div class="pickers">
-              <label class="picker">
-                <span class="sr">지역</span>
-                <select id="region-filter"></select>
-              </label>
-              <label class="picker" id="district-wrap" hidden>
-                <span class="sr">시·군·구</span>
-                <select id="district-filter"></select>
-              </label>
-              <div class="picker dates" role="group" aria-label="연구 날짜">
-                <label><span class="sr">연구 날짜 시작</span><input id="date-from" type="date"></label>
-                <span aria-hidden="true">~</span>
-                <label><span class="sr">연구 날짜 끝</span><input id="date-to" type="date"></label>
-                <button type="button" id="date-clear" class="date-clear" aria-label="날짜 지우기" hidden>×</button>
-              </div>
-            </div>
-            <label class="sort">
-              <span class="sr">정렬</span>
-              <select id="sort">
-                <option value="deadline">마감 임박순</option>
-                <option value="pay">사례비 높은순</option>
-                <option value="short">짧은 연구순</option>
-                <option value="new">최신 등록순</option>
-              </select>
-            </label>
-          </div>
-        </div>
-        <p class="count" id="count" aria-live="polite"></p>
-        <div class="board" id="board"></div>
       </div>
+
+      <div class="count-row">
+        <p class="count" id="count" aria-live="polite"></p>
+        <label class="sort">
+          <span class="sr">정렬</span>
+          <select id="sort">
+            <option value="deadline">마감 임박순</option>
+            <option value="pay">사례비 높은순</option>
+            <option value="short">짧은 연구순</option>
+            <option value="new">최신 등록순</option>
+          </select>
+        </label>
+      </div>
+      <div class="board" id="board"></div>
     </div>
   </section>
 
@@ -215,7 +199,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=15"></script>
-<script src="js/app.js?v=15"></script>
+<script src="js/data.js?v=16"></script>
+<script src="js/app.js?v=16"></script>
 </body>
 </html>

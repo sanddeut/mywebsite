@@ -22,7 +22,7 @@
   const samples = window.SAMPLE_STUDIES.map((s, i) => ({ ...s, deadline: addDays(s.daysLeft), startDate: addDays(s.startIn), endDate: addDays(s.endIn), createdAt: i }));
   let myPosts = store.get('posts', []);
   let apps = store.get('apps', []);
-  let profile = store.get('profile', { age: '', gender: '', region: '', onlineOnly: false, matchOnly: false });
+  let profile = { age: '', gender: '', matchOnly: false, ...store.get('profile', {}) };
   const state = { q: '', region: '', district: '', from: '', to: '', sort: 'deadline' };
   const SIDO = Object.keys(window.REGIONS);
   const place = s => [s.region, s.district].filter(Boolean).join(' ');
@@ -38,10 +38,9 @@
     const age = Number(profile.age);
     if (profile.age && (age < s.ageMin || age > s.ageMax)) why.push(`만 ${s.ageMin}~${s.ageMax}세 대상`);
     if (profile.gender && s.gender !== '무관' && s.gender !== profile.gender) why.push(`${s.gender}만 모집`);
-    if (s.mode === '대면' && profile.region && s.region !== profile.region) why.push(`${s.region}에서 대면 진행`);
     return why;
   }
-  const profileFilled = () => profile.age || profile.gender || profile.region;
+  const profileFilled = () => profile.age || profile.gender;
 
   // ---- 공통 조각 ----
   function ddayLabel(s) {
@@ -81,10 +80,8 @@
     const list = allStudies();
     const open = list.reduce((n, s) => n + Math.max(0, s.capacity - appliedCount(s)), 0);
     const online = list.filter(s => s.mode === '온라인').length;
-    $('#hero-stats').innerHTML = `
-      <div><dt>모집 중인 연구</dt><dd>${list.length}<small>건</small></dd></div>
-      <div><dt>남은 참여 자리</dt><dd>${open.toLocaleString('ko-KR')}<small>명</small></dd></div>
-      <div><dt>집에서 하는 온라인 연구</dt><dd>${online}<small>건</small></dd></div>`;
+    $('#hero-stats').innerHTML =
+      `<span>모집 중 <b>${list.length}</b>건</span><span>남은 자리 <b>${open.toLocaleString('ko-KR')}</b>명</span><span>온라인 <b>${online}</b>건</span>`;
   }
 
   function renderBoard() {
@@ -96,7 +93,6 @@
       // 고른 날짜 범위와 연구 기간이 하루라도 겹치면 보여요
       if (state.from && s.endDate && s.endDate < state.from) return false;
       if (state.to && s.startDate && s.startDate > state.to) return false;
-      if (profile.onlineOnly && s.mode !== '온라인') return false;
       if (profile.matchOnly && profileFilled() && mismatch(s).length) return false;
       if (q && ![s.title, s.school, s.lab, s.summary, s.type].join(' ').toLowerCase().includes(q)) return false;
       return true;
@@ -146,8 +142,8 @@
         <span>${filled}/${s.capacity}명</span>
       </div>
       <footer class="tabs-tear" aria-hidden="true">
-        <span><b>${won(s.pay)}</b>사례비</span>
-        <span><b>${duration(s.minutes)}</b>소요</span>
+        <span>사례비 <b>${won(s.pay)}</b></span>
+        <span>소요 <b>${duration(s.minutes)}</b></span>
       </footer>
     </article>`;
   }
@@ -297,16 +293,26 @@
 
   // ---- 내 조건 ----
   function initProfile() {
-    $('#p-region').innerHTML = '<option value="">선택 안 함</option>' + SIDO.map(r => `<option>${r}</option>`).join('');
+    const btn = $('#profile-toggle'), panel = $('#profile-form');
+    const label = () => {
+      const parts = [profile.age && `${profile.age}세`, profile.gender].filter(Boolean);
+      btn.textContent = parts.length ? parts.join(' · ') : '내 조건';
+      btn.classList.toggle('on', parts.length > 0);
+    };
     $('#p-age').value = profile.age;
     $('#p-gender').value = profile.gender;
-    $('#p-region').value = SIDO.includes(profile.region) ? profile.region : '';
-    $('#p-online').checked = profile.onlineOnly;
     $('#p-match').checked = profile.matchOnly;
-    $('#profile-form').addEventListener('input', () => {
-      profile = { age: $('#p-age').value, gender: $('#p-gender').value, region: $('#p-region').value,
-        onlineOnly: $('#p-online').checked, matchOnly: $('#p-match').checked };
+    label();
+    btn.addEventListener('click', () => {
+      panel.hidden = !panel.hidden;
+      btn.setAttribute('aria-expanded', String(!panel.hidden));
+      if (!panel.hidden) $('#p-age').focus();
+    });
+    panel.addEventListener('submit', e => e.preventDefault());
+    panel.addEventListener('input', () => {
+      profile = { age: $('#p-age').value, gender: $('#p-gender').value, matchOnly: $('#p-match').checked };
       store.set('profile', profile);
+      label();
       renderBoard();
     });
   }
