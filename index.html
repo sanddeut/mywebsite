@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap&text=MyVoice">
-<link rel="stylesheet" href="css/style.css?v=13">
+<link rel="stylesheet" href="css/style.css?v=14">
 </head>
 <body>
 <header class="top">
@@ -85,16 +85,12 @@
                 <span class="sr">지역</span>
                 <select id="region-filter"></select>
               </label>
-              <label class="picker">
-                <span class="sr">기간</span>
-                <select id="period-filter">
-                  <option value="">마감 기간 전체</option>
-                  <option value="3">3일 안에 마감</option>
-                  <option value="7">일주일 안에 마감</option>
-                  <option value="14">2주 안에 마감</option>
-                  <option value="30">한 달 안에 마감</option>
-                </select>
-              </label>
+              <div class="picker dates" role="group" aria-label="연구 날짜">
+                <label><span class="sr">연구 날짜 시작</span><input id="date-from" type="date"></label>
+                <span aria-hidden="true">~</span>
+                <label><span class="sr">연구 날짜 끝</span><input id="date-to" type="date"></label>
+                <button type="button" id="date-clear" class="date-clear" aria-label="날짜 지우기" hidden>×</button>
+              </div>
             </div>
             <label class="sort">
               <span class="sr">정렬</span>
@@ -169,6 +165,10 @@
           <legend>승인·연락</legend>
           <label class="field"><span>IRB 승인번호</span>
             <input id="f-irb" name="irb" required placeholder="예: 7001988-202610-HR-123-01"></label>
+          <label class="field"><span>연구 시작일</span>
+            <input id="f-start" name="startDate" type="date" required></label>
+          <label class="field"><span>연구 종료일</span>
+            <input id="f-end" name="endDate" type="date" required></label>
           <label class="field"><span>모집 마감일</span>
             <input id="f-deadline" name="deadline" type="date" required></label>
           <label class="field full"><span>연구자 연락처 (이메일)</span>
@@ -209,7 +209,7 @@
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/data.js?v=13"></script>
-<script src="js/app.js?v=13"></script>
+<script src="js/data.js?v=14"></script>
+<script src="js/app.js?v=14"></script>
 </body>
 </html>

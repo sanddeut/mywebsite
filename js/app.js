@@ -19,11 +19,11 @@
   const addDays = n => { const d = new Date(today); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
   const daysUntil = iso => Math.round((new Date(iso + 'T00:00:00') - today) / 86400000);
 
-  const samples = window.SAMPLE_STUDIES.map((s, i) => ({ ...s, deadline: addDays(s.daysLeft), createdAt: i }));
+  const samples = window.SAMPLE_STUDIES.map((s, i) => ({ ...s, deadline: addDays(s.daysLeft), startDate: addDays(s.startIn), endDate: addDays(s.endIn), createdAt: i }));
   let myPosts = store.get('posts', []);
   let apps = store.get('apps', []);
   let profile = store.get('profile', { age: '', gender: '', region: '', onlineOnly: false, matchOnly: false });
-  const state = { q: '', region: '', period: '', sort: 'deadline' };
+  const state = { q: '', region: '', from: '', to: '', sort: 'deadline' };
 
   const allStudies = () => [...myPosts, ...samples].filter(s => daysUntil(s.deadline) >= 0);
   const appliedCount = s => s.applied + apps.filter(a => a.studyId === s.id).length;
@@ -45,6 +45,8 @@
     const d = daysUntil(s.deadline);
     return d === 0 ? '오늘 마감' : `D-${d}`;
   }
+  const md = iso => iso ? `${Number(iso.slice(5, 7))}.${Number(iso.slice(8, 10))}` : '';
+  const period = s => s.startDate ? (s.startDate === s.endDate ? md(s.startDate) : `${md(s.startDate)} ~ ${md(s.endDate)}`) : '';
   function duration(m) { return m >= 60 ? `${Math.floor(m / 60)}시간${m % 60 ? ' ' + (m % 60) + '분' : ''}` : `${m}분`; }
 
   // ---- 연구 찾기 ----
@@ -52,7 +54,17 @@
     $('#region-filter').innerHTML = '<option value="">지역 전체</option><option value="온라인">온라인</option>' +
       window.REGIONS.map(r => `<option value="${r}">${r}</option>`).join('');
     $('#region-filter').addEventListener('change', e => { state.region = e.target.value; renderBoard(); });
-    $('#period-filter').addEventListener('change', e => { state.period = e.target.value; renderBoard(); });
+    const onDate = () => {
+      state.from = $('#date-from').value; state.to = $('#date-to').value;
+      $('#date-to').min = state.from || addDays(0);
+      $('#date-clear').hidden = !(state.from || state.to);
+      renderBoard();
+    };
+    $('#date-from').min = addDays(0);
+    $('#date-to').min = addDays(0);
+    $('#date-from').addEventListener('change', onDate);
+    $('#date-to').addEventListener('change', onDate);
+    $('#date-clear').addEventListener('click', () => { $('#date-from').value = ''; $('#date-to').value = ''; onDate(); });
   }
 
   function renderStats() {
@@ -70,7 +82,9 @@
     let list = allStudies().filter(s => {
       if (state.region === '온라인' && s.mode !== '온라인') return false;
       if (state.region && state.region !== '온라인' && !(s.mode === '대면' && s.region === state.region)) return false;
-      if (state.period && daysUntil(s.deadline) > Number(state.period)) return false;
+      // 고른 날짜 범위와 연구 기간이 하루라도 겹치면 보여요
+      if (state.from && s.endDate && s.endDate < state.from) return false;
+      if (state.to && s.startDate && s.startDate > state.to) return false;
       if (profile.onlineOnly && s.mode !== '온라인') return false;
       if (profile.matchOnly && profileFilled() && mismatch(s).length) return false;
       if (q && ![s.title, s.school, s.lab, s.summary, s.type].join(' ').toLowerCase().includes(q)) return false;
@@ -86,7 +100,7 @@
 
     $('#count').textContent = `${list.length}건의 연구`;
     if (!list.length) {
-      $('#board').innerHTML = `<div class="empty"><strong>조건에 맞는 연구가 없어요.</strong><span>검색어를 지우거나 지역·기간을 「전체」로 바꿔 보세요.</span></div>`;
+      $('#board').innerHTML = `<div class="empty"><strong>조건에 맞는 연구가 없어요.</strong><span>검색어나 날짜를 지우거나 지역을 「전체」로 바꿔 보세요.</span></div>`;
       return;
     }
     $('#board').innerHTML = list.map(card).join('');
@@ -111,7 +125,7 @@
       <h3>${esc(s.title)}</h3>
       <p class="org">${esc(s.school)} · ${esc(s.lab)}</p>
       <div class="meta">
-        <span>만 ${s.ageMin}~${s.ageMax}세${s.gender !== '무관' ? ' · ' + esc(s.gender) : ''}</span>
+        <span>${period(s) ? '연구 ' + period(s) + ' · ' : ''}만 ${s.ageMin}~${s.ageMax}세${s.gender !== '무관' ? ' · ' + esc(s.gender) : ''}</span>
         ${matchChip}
         ${hasApplied(s.id) ? '<span class="chip done">신청함</span>' : ''}
         ${s.mine ? '<span class="chip mine">내 공고</span>' : ''}
@@ -146,6 +160,7 @@
       <dl class="facts">
         <div><dt>사례비</dt><dd>${won(s.pay)}</dd></div>
         <div><dt>소요 시간</dt><dd>${duration(s.minutes)}</dd></div>
+        <div><dt>연구 기간</dt><dd>${period(s) || '-'}</dd></div>
         <div><dt>장소</dt><dd>${esc(s.location || '-')}</dd></div>
         <div><dt>모집</dt><dd>${filled}/${s.capacity}명</dd></div>
         <div><dt>마감</dt><dd>${s.deadline.replaceAll('-', '.')}</dd></div>
@@ -214,6 +229,7 @@
       const v = id => $('#' + id).value.trim();
       const mode = v('f-mode');
       if (mode === '대면' && !v('f-region')) { $('#f-region').focus(); return showErr(err, '대면 연구는 지역을 골라 주세요.'); }
+      if (v('f-end') < v('f-start')) { $('#f-end').focus(); return showErr(err, '연구 종료일이 시작일보다 빠를 수 없어요.'); }
       const ageMin = Number(v('f-agemin')), ageMax = Number(v('f-agemax'));
       if (ageMin > ageMax) return showErr(err, '최소 나이가 최대 나이보다 클 수 없어요.');
 
@@ -225,7 +241,7 @@
         minutes: Number(v('f-minutes')), pay: Number(v('f-pay')), capacity: Number(v('f-capacity')), applied: 0,
         ageMin, ageMax, gender: v('f-gender'),
         conditions: v('f-conditions').split('\n').map(x => x.trim()).filter(Boolean),
-        irb: v('f-irb'), deadline: v('f-deadline'), contact: v('f-contact')
+        irb: v('f-irb'), deadline: v('f-deadline'), startDate: v('f-start'), endDate: v('f-end'), contact: v('f-contact')
       };
       myPosts.unshift(post);
       store.set('posts', myPosts);
