@@ -1,7 +1,8 @@
 /* 글꼴: 전부 Pretendard
    레이아웃: 캠퍼스 게시판. 왼쪽 '내 조건' 카드 + 오른쪽 모집 전단(아래 뜯는 띠에 사례비·시간) 격자 */
 :root {
-  --bg: #eef1ee;          /* 게시판 바탕 */
+  --bg: #ffffff;          /* 페이지 바탕 */
+  --soft: #f1f4f2;        /* 닫기 버튼 등 옅은 면 */
   --paper: #ffffff;       /* 전단 종이 */
   --ink: #18222d;         /* 본문 */
   --muted: #5d6a72;
@@ -21,7 +22,7 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #12181d; --paper: #1b232a; --ink: #e6ece9; --muted: #9aa8ae; --line: #2e3a41;
+    --bg: #12181d; --soft: #232c33; --paper: #1b232a; --ink: #e6ece9; --muted: #9aa8ae; --line: #2e3a41;
     --accent: #5cc49d; --accent-soft: #1d3a30; --urgent: #f0a35e; --urgent-soft: #3d2a19;
     --danger: #f08a80; --danger-soft: #3d1f1d;
     --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 6px 18px rgb(0 0 0 / .25);
@@ -163,7 +164,7 @@ a { color: inherit; }
 .sheet::backdrop { background: rgb(12 18 22 / .5); }
 .sheet-body { position: relative; padding: 28px; display: grid; gap: 12px; }
 .sheet h2 { font: 700 24px var(--f-display); padding-right: 32px; }
-.close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--bg); font-size: 22px; line-height: 1; cursor: pointer; }
+.close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--soft); font-size: 22px; line-height: 1; cursor: pointer; }
 .summary { margin: 4px 0; }
 .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0 16px; margin: 0; border-top: 1px solid var(--line); }
 .facts div { padding: 10px 0; border-bottom: 1px solid var(--line); min-width: 0; }
