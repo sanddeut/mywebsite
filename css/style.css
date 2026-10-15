@@ -210,8 +210,16 @@ a { color: inherit; }
 
 .card-foot {
   position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  margin: auto -20px 0; padding: 16px 20px 18px; border-top: 1px solid var(--line);
+  margin: auto -20px 0; padding: 16px 20px 18px; border-top: 2px dashed var(--line);
 }
+/* 티켓처럼 절취선 양 끝을 반원으로 파낸 홈 */
+.card-foot::before, .card-foot::after {
+  content: ""; position: absolute; top: -12px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--line); transition: border-color .15s ease;
+}
+.card-foot::before { left: -12px; }
+.card-foot::after { right: -12px; }
+.flyer:hover .card-foot::before, .flyer:hover .card-foot::after { border-color: var(--muted); }
 .pay { display: flex; align-items: baseline; gap: 8px; }
 .pay b { font-size: 16px; font-weight: 700; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 .pay span { font-size: 13px; color: var(--muted); }
