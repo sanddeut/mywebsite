@@ -23,7 +23,7 @@
   let myPosts = store.get('posts', []);
   let apps = store.get('apps', []);
   let profile = { age: '', gender: '', matchOnly: false, ...store.get('profile', {}) };
-  const state = { q: '', region: '', district: '', from: '', to: '', sort: 'deadline' };
+  const state = { q: '', type: '', region: '', district: '', from: '', to: '', sort: 'deadline' };
   const SIDO = Object.keys(window.REGIONS);
   const place = s => [s.region, s.district].filter(Boolean).join(' ');
   const districtOpts = (sido, blank) => `<option value="">${blank}</option>` + (window.REGIONS[sido] || []).map(d => `<option>${d}</option>`).join('');
@@ -53,6 +53,8 @@
 
   // ---- 연구 찾기 ----
   function initPickers() {
+    $('#type-filter').innerHTML = '<option value="">유형 전체</option>' + window.TYPES.map(t => `<option>${t}</option>`).join('');
+    $('#type-filter').addEventListener('change', e => { state.type = e.target.value; renderBoard(); });
     $('#region-filter').innerHTML = '<option value="">지역 전체</option><option value="온라인">온라인</option>' +
       SIDO.map(r => `<option value="${r}">${r}</option>`).join('');
     $('#region-filter').addEventListener('change', e => {
@@ -91,6 +93,7 @@
   function renderBoard() {
     const q = state.q.trim().toLowerCase();
     let list = allStudies().filter(s => {
+      if (state.type && s.type !== state.type) return false;
       if (state.region === '온라인' && s.mode !== '온라인') return false;
       if (state.region && state.region !== '온라인' && !(s.mode === '대면' && s.region === state.region)) return false;
       if (state.district && s.district !== state.district) return false;
@@ -111,7 +114,7 @@
 
     $('#count').textContent = `${list.length}건의 연구`;
     if (!list.length) {
-      $('#board').innerHTML = `<div class="empty"><strong>조건에 맞는 연구가 없어요.</strong><span>검색어나 날짜를 지우거나 지역을 「전체」로 바꿔 보세요.</span></div>`;
+      $('#board').innerHTML = `<div class="empty"><strong>조건에 맞는 연구가 없어요.</strong><span>검색어나 날짜를 지우거나 유형과 지역을 「전체」로 바꿔 보세요.</span></div>`;
       return;
     }
     $('#board').innerHTML = list.map(card).join('');
