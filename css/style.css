@@ -131,7 +131,7 @@ a { color: inherit; }
 
 /* 찾기 화면: 한 열. 검색 → 필터 한 줄 → 결과 */
 .find { padding-block: 0 72px; }
-.toolbar { display: grid; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.toolbar { display: grid; gap: 12px; }
 .stack { display: grid; gap: 14px; }
 
 .field { display: grid; gap: 6px; font-size: 13px; font-weight: 400; color: var(--muted); min-width: 0; }
